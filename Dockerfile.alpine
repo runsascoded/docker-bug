@@ -1,0 +1,30 @@
+# FROM python:3.8.6-slim
+FROM alpine@sha256:25f5332d060da2c7ea2c8a85d2eac623bd0b5f97d508b165f846c7d172897438
+WORKDIR /root
+RUN echo "111" > aaa
+WORKDIR /root/dir
+RUN echo "222" > bbb
+
+RUN chmod -R go+rx /root
+
+WORKDIR /
+
+ARG USER=user
+ENV HOME /home/$USER
+
+# install sudo as root
+RUN apk add --update bash sudo
+
+# add new user
+RUN adduser -D $USER \
+        && echo "$USER ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/$USER \
+        && chmod 0440 /etc/sudoers.d/$USER
+
+WORKDIR $HOME
+
+COPY test.sh ./
+RUN chown $USER:$USER test.sh
+
+USER $USER
+
+ENTRYPOINT ["./test.sh"]
