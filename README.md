@@ -1,5 +1,5 @@
 # docker-for-linux file permissions bug repro
-([see comment on docker-for-linux#433](https://github.com/docker/for-linux/issues/433))
+([see comment on docker/for-linux#433](https://github.com/docker/for-linux/issues/433))
 
 ```bash
 docker run --rm -it runsascoded/docker-bug:debian
